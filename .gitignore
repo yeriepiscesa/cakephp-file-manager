@@ -1,0 +1,23 @@
+# Composer
+/vendor/
+
+# PHPUnit
+.phpunit.cache
+tests.sqlite
+coverage/
+coverage.xml
+clover.xml
+
+# IDE / editor
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# Environment / secrets
+.env
+.env.*

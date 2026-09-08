@@ -1,0 +1,35 @@
+{
+    "name": "yeriepiscesa/cakephp-file-manager",
+    "description": "File management plugin for CakePHP with categories, tags, sharing, and Flysystem upload",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "keywords": [
+        "cakephp",
+        "file-manager",
+        "media",
+        "upload",
+        "flysystem"
+    ],
+    "require": {
+        "php": ">=8.5",
+        "cakephp/cakephp": "^5.3",
+        "cakephp/migrations": "^5.2",
+        "cakedc/users": "^16.0",
+        "friendsofcake/crud": "^7.2",
+        "yeriepiscesa/cakephp-crud-connect": "@dev",
+        "friendsofcake/search": "^7.7",
+        "josegonzalez/cakephp-upload": "^8.1"
+    },
+    "suggest": {
+        "yeriepiscesa/cakephp-business-users": "Enables group and tenant based file sharing",
+        "yeriepiscesa/cakephp-uikit": "Default admin theme and layout (configure via FileManager.theme)"
+    },
+    "autoload": {
+        "psr-4": {
+            "FileManager\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

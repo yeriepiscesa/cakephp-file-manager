@@ -14,15 +14,8 @@ use FileManager\Application\Port\BusinessUserProviderInterface;
  * directly references BusinessUsers internals; all other FileManager
  * code depends on BusinessUserProviderInterface.
  *
- * Register this in the container when the BusinessUsers plugin is active:
- *
- * ```php
- * // In FileManagerPlugin::services() or Application::services():
- * $container->add(
- *     BusinessUserProviderInterface::class,
- *     BusinessUsersAdapter::class
- * )->addArgument(TenantUserRepositoryInterface::class);
- * ```
+ * Wired automatically by BusinessUserProviderBinding when BusinessUsers is loaded.
+ * Override in Application::services() if a custom adapter is required.
  */
 class BusinessUsersAdapter implements BusinessUserProviderInterface
 {

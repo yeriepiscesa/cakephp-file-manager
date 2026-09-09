@@ -3,22 +3,19 @@ declare(strict_types=1);
 
 namespace FileManager;
 
-use BusinessUsers\Domain\Repository\TenantUserRepositoryInterface;
 use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Core\PluginApplicationInterface;
-use Cake\Core\Plugin;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use FileManager\Application\Port\BusinessUserProviderInterface;
 use FileManager\Application\Port\ManagedFileServeInterface;
-use FileManager\Infrastructure\Adapter\BusinessUsersAdapter;
 use FileManager\Infrastructure\Adapter\ManagedFileServeAdapter;
-use FileManager\Infrastructure\Adapter\NullBusinessUserProvider;
+use FileManager\Infrastructure\DI\BusinessUserProviderBinding;
 use FileManager\Service\FileAccessChecker;
 
 /**
@@ -71,17 +68,7 @@ class FileManagerPlugin extends BasePlugin
 
     public function services(ContainerInterface $container): void
     {
-        // Bind the BusinessUserProvider port to the appropriate adapter
-        if (Plugin::isLoaded('BusinessUsers')) {
-            $container->addShared(BusinessUserProviderInterface::class, function () use ($container) {
-                /** @var \BusinessUsers\Domain\Repository\TenantUserRepositoryInterface $tenantUserRepository */
-                $tenantUserRepository = $container->get(TenantUserRepositoryInterface::class);
-
-                return new BusinessUsersAdapter($tenantUserRepository);
-            });
-        } else {
-            $container->add(BusinessUserProviderInterface::class, NullBusinessUserProvider::class);
-        }
+        BusinessUserProviderBinding::register($container);
 
         // FileAccessChecker (internal service used by ManagedFileServeAdapter)
         $container->addShared(FileAccessChecker::class, function () use ($container) {

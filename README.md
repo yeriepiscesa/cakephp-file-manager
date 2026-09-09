@@ -97,7 +97,7 @@ return [
 ];
 ```
 
-`FileManagerPlugin::services()` mendeteksi BusinessUsers via `Plugin::isLoaded('BusinessUsers')` dan mem-bind `BusinessUsersAdapter` untuk share group/tenant.
+`FileManagerPlugin::services()` mendaftarkan `BusinessUserProviderBinding`, yang mendeteksi BusinessUsers saat **service pertama kali di-resolve** (bukan saat registrasi DI) via `Plugin::isLoaded('BusinessUsers')` + ketersediaan `TenantUserRepositoryInterface`.
 
 #### Skenario B — FileManager saja (tanpa BusinessUsers)
 
@@ -460,7 +460,14 @@ public function getTenantIds(string $userId): array;  // list<int>
 
 ### DI Wiring (automatic)
 
-`FileManagerPlugin::services()` detects whether `BusinessUsers` is loaded via `Plugin::isLoaded('BusinessUsers')` and binds the correct adapter automatically. No manual wiring required.
+`BusinessUserProviderBinding` (dipanggil dari `FileManagerPlugin::services()`) memilih adapter saat container **resolve** service, bukan saat registrasi:
+
+| Kondisi | Adapter |
+|---|---|
+| `Plugin::isLoaded('BusinessUsers')` **dan** `TenantUserRepositoryInterface` tersedia | `BusinessUsersAdapter` |
+| Selain itu | `NullBusinessUserProvider` |
+
+Deteksi lazy ini aman meski urutan entri di `config/plugins.php` tidak ideal — selama BusinessUsers terdaftar dan bootstrap sebelum request pertama, share group/tenant tetap aktif.
 
 To override, re-bind in `Application::services()` after `parent::pluginBootstrap()`:
 

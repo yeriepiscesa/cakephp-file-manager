@@ -66,20 +66,75 @@ composer require yeriepiscesa/cakephp-uikit yeriepiscesa/cakephp-business-users
 
 ### 2. Load plugin
 
-Tambahkan ke `config/plugins.php`:
+**Jangan** mendaftarkan plugin yang sama dua kali. Beberapa dependensi di-load otomatis oleh plugin lain — terutama `CakeDC/Users` yang sudah di-bootstrap oleh BusinessUsers.
+
+#### Siapa load apa
+
+| Plugin | Daftar di `config/plugins.php`? | Keterangan |
+|---|---|---|
+| `CakeDC/Users` | **Tergantung skenario** (lihat di bawah) | Auto-load oleh BusinessUsers |
+| `Crud`, `Search`, `Josegonzalez/Upload`, `Migrations` | **Ya** | Host wajib daftar |
+| `CrudConnect`, `AuditStash` | **Ya** | Wajib jika BusinessUsers dipakai |
+| `Uikit` | **Ya** (disarankan) | Layout admin |
+| `BusinessUsers` | **Ya**, jika butuh group/tenant sharing | Mem-load `CakeDC/Users` otomatis |
+| `FileManager` | **Ya** | Load **setelah** semua dependensinya |
+
+#### Skenario A — dengan BusinessUsers (disarankan)
+
+Pakai konfigurasi ini jika project sudah memakai BusinessUsers untuk auth/multi-tenant. **Jangan** tambahkan `'CakeDC/Users' => []` — BusinessUsers mem-load-nya di `BusinessUsersPlugin::bootstrap()`.
 
 ```php
+return [
+    'Migrations' => ['onlyCli' => true],
+    'Crud' => [],
+    'Search' => [],
+    'Josegonzalez/Upload' => [],
+    'AuditStash' => [],
+    'CrudConnect' => [],
+    'Uikit' => [],
+    'BusinessUsers' => [],   // mem-load CakeDC/Users otomatis
+    'FileManager' => [],     // setelah BusinessUsers
+];
+```
+
+`FileManagerPlugin::services()` mendeteksi BusinessUsers via `Plugin::isLoaded('BusinessUsers')` dan mem-bind `BusinessUsersAdapter` untuk share group/tenant.
+
+#### Skenario B — FileManager saja (tanpa BusinessUsers)
+
+Jika BusinessUsers **tidak** dipakai, daftarkan `CakeDC/Users` secara eksplisit karena tidak ada plugin lain yang mem-load-nya:
+
+```php
+return [
+    'Migrations' => ['onlyCli' => true],
+    'Crud' => [],
+    'Search' => [],
+    'Josegonzalez/Upload' => [],
+    'CakeDC/Users' => [],
+    'Uikit' => [],
+    'FileManager' => [],
+];
+```
+
+Tanpa BusinessUsers, FileManager memakai `NullBusinessUserProvider` — fitur share `group` dan `tenant` tidak aktif; share `user` dan `all` tetap berfungsi.
+
+#### Urutan load
+
+1. `Crud`, `Search`, `Josegonzalez/Upload`
+2. `AuditStash`, `CrudConnect` (jika BusinessUsers dipakai)
+3. `Uikit`
+4. `BusinessUsers` (jika dipakai — sebelum FileManager)
+5. `FileManager`
+
+#### Anti-pattern (hindari)
+
+```php
+// ❌ JANGAN — CakeDC/Users ter-load dua kali
 'CakeDC/Users' => [],
-'Crud' => [],
-'Search' => [],
-'Josegonzalez/Upload' => [],
-'Migrations' => ['onlyCli' => true],
-'Uikit' => [],           // disarankan
-'BusinessUsers' => [],   // opsional, untuk group/tenant sharing
+'BusinessUsers' => [],
 'FileManager' => [],
 ```
 
-`FileManager` harus di-load **setelah** `Crud`, `Search`, `Josegonzalez/Upload`, dan `CakeDC/Users`.
+Gejala umum jika terjadi bentrok: error bootstrap plugin, konfigurasi `Users.config` tidak terbaca, atau route auth ganda.
 
 ### 3. Prasyarat host
 
@@ -383,6 +438,8 @@ Download permission follows the same chain but additionally checks `can_download
 ---
 
 ## Integrasi BusinessUsers
+
+FileManager tidak memuat BusinessUsers sendiri — host application yang mendaftarkan keduanya di `config/plugins.php`. Lihat [Load plugin](#2-load-plugin) untuk skenario A/B dan aturan urutan load.
 
 The plugin exposes a **port** and ships two **adapters**:
 

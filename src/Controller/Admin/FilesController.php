@@ -365,7 +365,7 @@ class FilesController extends AppController
         }
 
         $tenants = $this->fetchTable('BusinessUsers.Tenants')
-            ->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+            ->find('list', keyField: 'id', valueField: 'name')
             ->orderByAsc('name')
             ->toArray();
 

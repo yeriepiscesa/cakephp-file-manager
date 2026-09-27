@@ -48,6 +48,7 @@ class FmFilesTable extends Table
                 'filesystem' => [
                     'root' => ROOT . DS . 'data-files',
                 ],
+                'writer' => \FileManager\File\Writer\StrictWriter::class,
                 'keepFilesOnDelete' => false,
             ],
         ]);
@@ -119,6 +120,7 @@ class FmFilesTable extends Table
             ->allowEmptyString('disk');
 
         $validator
+            ->requirePresence('filename', 'create')
             ->notEmptyFile('filename', __('Please choose a file to upload.'), 'create');
 
         $validator

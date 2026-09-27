@@ -166,14 +166,14 @@ Tambahkan ke `config/app.php` atau `config/app_local.php`:
     'defaultDisk' => 'local',
 
     // Path absolut root storage lokal (dipakai ManagedFileServeAdapter)
-    'diskRoot' => ROOT . DS . 'data-files' . DS . 'FileManager',
+    'diskRoot' => ROOT . DS . 'data-files',
 
     // Nama plugin theme untuk layout admin (default: Uikit)
     'theme' => env('FILE_MANAGER_THEME', 'Uikit'),
 ],
 ```
 
-Upload fisik dikonfigurasi di `FmFilesTable` via behavior `Josegonzalez/Upload.Upload` dengan root `ROOT/data-files`. Pastikan web server/PHP memiliki permission tulis ke folder tersebut.
+Upload fisik dikonfigurasi di `FmFilesTable` via behavior `Josegonzalez/Upload.Upload` dengan root `ROOT/data-files` dan subfolder `FileManager/`. `FileManager.diskRoot` untuk serving harus menunjuk ke root yang sama, agar path yang tersimpan tidak berulang. Pastikan proses PHP dapat menulis ke `data-files/FileManager/`. Jika upload gagal, penyimpanan record dihentikan dan error write ditampilkan alih-alih error SQL kolom `path`.
 
 ---
 

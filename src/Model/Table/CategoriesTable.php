@@ -24,9 +24,10 @@ class CategoriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-        $this->addBehavior('Tools.Slugged', [
-            'label' => 'name',
+        $this->addBehavior('FileManager.Slugged', [
+            'source' => 'name',
             'field' => 'slug',
+            'maxLength' => 180,
         ]);
 
         $this->belongsTo('ParentCategories', [

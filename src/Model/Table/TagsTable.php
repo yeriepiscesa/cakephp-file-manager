@@ -21,9 +21,10 @@ class TagsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-        $this->addBehavior('Tools.Slugged', [
-            'label' => 'name',
+        $this->addBehavior('FileManager.Slugged', [
+            'source' => 'name',
             'field' => 'slug',
+            'maxLength' => 120,
         ]);
 
         $this->belongsToMany('FmFiles', [

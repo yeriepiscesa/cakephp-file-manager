@@ -51,7 +51,7 @@ Atau via repository GitHub:
 }
 ```
 
-Dependency Composer plugin ini sudah mencakup: `cakedc/users`, `friendsofcake/crud`, `friendsofcake/search`, `josegonzalez/cakephp-upload`, `cakephp/migrations`.
+Dependency Composer plugin ini sudah mencakup: `cakedc/users`, `friendsofcake/crud`, `friendsofcake/search`, `josegonzalez/cakephp-upload`, `cakephp/migrations`. Slug kategori dan tag dibuat oleh behavior internal `FileManager.Slugged`; plugin `Tools` tidak diperlukan.
 
 Disarankan tambahan:
 

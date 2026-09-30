@@ -179,7 +179,7 @@ $this->element('Uikit.page_header', [
                         </td>
                         <td>
                             <span class="uk-label uk-label-<?= $file->type === 'image' ? 'success' : ($file->type === 'video' ? 'warning' : '') ?>">
-                                <?= h(ucfirst($file->type)) ?>
+                                <?= h(__(ucfirst($file->type))) ?>
                             </span>
                         </td>
                         <td><?= $file->category ? h($file->category->name) : '<span class="uk-text-muted">—</span>' ?></td>

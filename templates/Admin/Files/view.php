@@ -89,7 +89,7 @@ $this->assign('title', h($file->title));
             <h3 class="uk-card-title"><?= __('File Info') ?></h3>
             <dl class="uk-description-list uk-description-list-divider uk-text-small">
                 <dt><?= __('Type') ?></dt>
-                <dd><span class="uk-label"><?= h(ucfirst($file->type)) ?></span></dd>
+                <dd><span class="uk-label"><?= h(__(ucfirst($file->type))) ?></span></dd>
                 <dt><?= __('Filename') ?></dt>
                 <dd><?= h($file->filename) ?></dd>
                 <dt><?= __('Extension') ?></dt>

@@ -8,7 +8,6 @@
 $this->assign('title', __('Edit Category: {0}', $category->name));
 ?>
 
-<div class="uk-width-1-2@m">
     <?= $this->Form->create($category, ['class' => 'uk-form-stacked']) ?>
 
         <div class="uk-margin">
@@ -59,4 +58,3 @@ $this->assign('title', __('Edit Category: {0}', $category->name));
         ]) ?>
 
     <?= $this->Form->end() ?>
-</div>

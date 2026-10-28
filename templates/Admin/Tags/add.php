@@ -7,7 +7,6 @@
 $this->assign('title', __('New Tag'));
 ?>
 
-<div class="uk-width-1-3@m">
     <?= $this->Form->create($tag, ['class' => 'uk-form-stacked']) ?>
 
         <div class="uk-margin">
@@ -24,4 +23,3 @@ $this->assign('title', __('New Tag'));
         ]) ?>
 
     <?= $this->Form->end() ?>
-</div>

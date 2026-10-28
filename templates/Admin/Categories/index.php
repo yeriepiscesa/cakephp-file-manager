@@ -18,7 +18,7 @@ $this->element('Uikit.page_header', [
 
 <?= $this->element('Uikit.table_controls') ?>
 
-<div class="uk-overflow-auto">
+<div class="datalist-table uk-overflow-auto">
     <table class="uk-table uk-table-small uk-table-striped uk-table-hover">
         <thead>
             <tr>
